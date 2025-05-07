@@ -172,8 +172,7 @@ class Space(pygame.sprite.Sprite):
         self.bought = True
         self.party = party
         self.party_pos = party_pos
-        self.font = pixel_font.render(self.name, True, self.colour)
-        self.party_font = pixel_font.render('—', True, self.party)
+        self.font = pixel_font.render(self.name, True, 'black')
         self.bold_font = bold_font.render('-', True, self.party)
         self.font_270 = pygame.transform.rotate(self.bold_font, 270)
         self.font_90 = pygame.transform.rotate(self.bold_font, 90)
@@ -184,6 +183,10 @@ class Space(pygame.sprite.Sprite):
 
     def set_buy(self, is_bought):
         self.bought = is_bought
+        self.party = party_colour
+        self.bold_font = bold_font.render('-', True, self.party)
+        self.font_270 = pygame.transform.rotate(self.bold_font, 270)
+        self.font_90 = pygame.transform.rotate(self.bold_font, 90)
 
     def get_buy(self):
         return self.bought
@@ -223,18 +226,16 @@ class Space(pygame.sprite.Sprite):
             if self.cost != 0:
                 property_name = pixel_font.render(self.name, True, 0)
                 cost_text = pixel_font.render("Property Cost: $"+ str(self.cost), True, 0)
-                ROI_text = pixel_font.render("ROI:", True, 0)
                 setbonus = 0
                 for color, locs in zip(sets.keys(), sets.values()):
                     if self.name in locs:
                          setbonus = set_bonus[color]
                          break
                 set_bonus_text = pixel_font.render("Set Bonus: " + str(setbonus) , True, 0)
-                pygame.draw.rect(screen, (170 , 170, 170), [20, 120, 250, 220])
+                pygame.draw.rect(screen, (170 , 170, 170), [20, 120, 250, 85])
                 screen.blit(property_name, (30, 130))
                 screen.blit(cost_text, (30, 150))
-                screen.blit(ROI_text, (30, 170))
-                screen.blit(set_bonus_text, (30, 190))
+                screen.blit(set_bonus_text, (30, 170))
 
 class AnimatedDice(pygame.sprite.Sprite):
     def __init__(self, frames, pos, groups, dice_timer, roll_amnt =- 1):
