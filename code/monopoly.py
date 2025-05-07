@@ -37,14 +37,14 @@ def show_help_screen():
         title = font_big.render("Monopoly Rules", True, BLACK)
         screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 6)))
 
-        y_offset = HEIGHT // 4  
+        y_offset = HEIGHT // 5  
 
        
         currency_header = font_header.render("Currency: Influence Points", True, BLACK)
         screen.blit(currency_header, (WIDTH // 2 - currency_header.get_width() // 2, y_offset))
         y_offset += 50 
         currency_text = font_medium.render(
-            "Insert explanation here",
+            "In game currency that changes based on player desision to buy property or landing on certain locations",
             True, BLACK)
         screen.blit(currency_text, (WIDTH // 2 - currency_text.get_width() // 2, y_offset))
         y_offset += 60  
@@ -53,7 +53,7 @@ def show_help_screen():
         screen.blit(objective_header, (WIDTH // 2 - objective_header.get_width() // 2, y_offset))
         y_offset += 40
         objective_text = font_medium.render(
-            "Insert explanation here",
+            "To Gain as many Votes as possible by owning properties and moving around the board.",
             True, BLACK)
         screen.blit(objective_text, (WIDTH // 2 - objective_text.get_width() // 2, y_offset))
         y_offset += 60  
@@ -62,7 +62,7 @@ def show_help_screen():
         screen.blit(go_header, (WIDTH // 2 - go_header.get_width() // 2, y_offset))
         y_offset += 40
         go_text = font_medium.render(
-            "Insert explanation here",
+            "Gain Votes based on the properties owned",
             True, BLACK)
         screen.blit(go_text, (WIDTH // 2 - go_text.get_width() // 2, y_offset))
         y_offset += 60 
@@ -71,7 +71,7 @@ def show_help_screen():
         screen.blit(special_header, (WIDTH // 2 - special_header.get_width() // 2, y_offset))
         y_offset += 40
         special_text = font_medium.render(
-            "Insert explanation here",
+            "Gain a random effect when the player lands on one of the Spaces.",
             True, BLACK)
         screen.blit(special_text, (WIDTH // 2 - special_text.get_width() // 2, y_offset))
         y_offset += 60  
@@ -80,7 +80,7 @@ def show_help_screen():
         screen.blit(ending_header, (WIDTH // 2 - ending_header.get_width() // 2, y_offset))
         y_offset += 40
         ending_text = font_medium.render(
-            "Insert explanation here",
+            "Pass GO 5 times and if the players Votes are positive they WIN!",
             True, BLACK)
         screen.blit(ending_text, (WIDTH // 2 - ending_text.get_width() // 2, y_offset))
         y_offset += 60  
@@ -172,8 +172,7 @@ class Space(pygame.sprite.Sprite):
         self.bought = True
         self.party = party
         self.party_pos = party_pos
-        self.font = pixel_font.render(self.name, True, self.colour)
-        self.party_font = pixel_font.render('—', True, self.party)
+        self.font = pixel_font.render(self.name, True, 'black')
         self.bold_font = bold_font.render('-', True, self.party)
         self.font_270 = pygame.transform.rotate(self.bold_font, 270)
         self.font_90 = pygame.transform.rotate(self.bold_font, 90)
@@ -184,6 +183,10 @@ class Space(pygame.sprite.Sprite):
 
     def set_buy(self, is_bought):
         self.bought = is_bought
+        self.party = party_colour
+        self.bold_font = bold_font.render('-', True, self.party)
+        self.font_270 = pygame.transform.rotate(self.bold_font, 270)
+        self.font_90 = pygame.transform.rotate(self.bold_font, 90)
 
     def get_buy(self):
         return self.bought
@@ -223,18 +226,16 @@ class Space(pygame.sprite.Sprite):
             if self.cost != 0:
                 property_name = pixel_font.render(self.name, True, 0)
                 cost_text = pixel_font.render("Property Cost: $"+ str(self.cost), True, 0)
-                ROI_text = pixel_font.render("ROI:", True, 0)
                 setbonus = 0
                 for color, locs in zip(sets.keys(), sets.values()):
                     if self.name in locs:
                          setbonus = set_bonus[color]
                          break
                 set_bonus_text = pixel_font.render("Set Bonus: " + str(setbonus) , True, 0)
-                pygame.draw.rect(screen, (170 , 170, 170), [20, 120, 250, 220])
+                pygame.draw.rect(screen, (170 , 170, 170), [20, 120, 250, 85])
                 screen.blit(property_name, (30, 130))
                 screen.blit(cost_text, (30, 150))
-                screen.blit(ROI_text, (30, 170))
-                screen.blit(set_bonus_text, (30, 190))
+                screen.blit(set_bonus_text, (30, 170))
 
 class AnimatedDice(pygame.sprite.Sprite):
     def __init__(self, frames, pos, groups, dice_timer, roll_amnt =- 1):
@@ -345,7 +346,7 @@ def dice_timer(roll):
         redo = True
         rolls -= 24
         go_passes += 1
-        Influence_points += 100
+        Votes += 50
     if rolls == 12:
         go_passes += 1
     if rolls == 18:
