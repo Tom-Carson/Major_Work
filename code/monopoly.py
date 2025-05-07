@@ -695,10 +695,6 @@ while running:
                     if rolls > 23:
                         rolls -= 24
                 player.move_to_square((all_spaces.sprites()[rolls]).get_position()) 
-                choice_text = pixel_font.render(choice, True, 'black')
-            else:
-                choice = ""
-                choice_text = pixel_font.render(choice, True, 'black')
 
 
 
