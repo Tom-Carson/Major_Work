@@ -3,8 +3,146 @@ import os
 from os.path import join
 import random 
 from math import ceil
+import sys
+
 
 pygame.init()
+
+WIDTH, HEIGHT = 1280, 720  
+screen = pygame.display.set_mode((WIDTH, HEIGHT))  
+pygame.display.set_caption("Monopoly")
+clock = pygame.time.Clock()
+
+font_big = pygame.font.Font(None, 80)  
+font_medium = pygame.font.Font(None, 35)  
+font_small = pygame.font.Font(None, 30)  
+font_header = pygame.font.Font(None, 50) 
+
+LIGHT_BLUE = (0, 174, 239)
+DARK_BLUE = (0, 37, 87)
+WHITE = (255, 255, 255)
+YELLOW = (255, 221, 51)
+BLACK = (0, 0, 0)
+
+button_width = 350 
+button_height = 60  
+button_radius = 30  
+
+
+def show_help_screen():
+    while True:
+        screen.fill(LIGHT_BLUE)  
+
+     
+        title = font_big.render("Monopoly Rules", True, BLACK)
+        screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 6)))
+
+        y_offset = HEIGHT // 4  
+
+       
+        currency_header = font_header.render("Currency: Influence Points", True, BLACK)
+        screen.blit(currency_header, (WIDTH // 2 - currency_header.get_width() // 2, y_offset))
+        y_offset += 50 
+        currency_text = font_medium.render(
+            "Insert explanation here",
+            True, BLACK)
+        screen.blit(currency_text, (WIDTH // 2 - currency_text.get_width() // 2, y_offset))
+        y_offset += 60  
+
+        objective_header = font_header.render("Objective", True, BLACK)
+        screen.blit(objective_header, (WIDTH // 2 - objective_header.get_width() // 2, y_offset))
+        y_offset += 40
+        objective_text = font_medium.render(
+            "Insert explanation here",
+            True, BLACK)
+        screen.blit(objective_text, (WIDTH // 2 - objective_text.get_width() // 2, y_offset))
+        y_offset += 60  
+
+        go_header = font_header.render("Passing 'Go'", True, BLACK)
+        screen.blit(go_header, (WIDTH // 2 - go_header.get_width() // 2, y_offset))
+        y_offset += 40
+        go_text = font_medium.render(
+            "Insert explanation here",
+            True, BLACK)
+        screen.blit(go_text, (WIDTH // 2 - go_text.get_width() // 2, y_offset))
+        y_offset += 60 
+
+        special_header = font_header.render("Special Spaces", True, BLACK)
+        screen.blit(special_header, (WIDTH // 2 - special_header.get_width() // 2, y_offset))
+        y_offset += 40
+        special_text = font_medium.render(
+            "Insert explanation here",
+            True, BLACK)
+        screen.blit(special_text, (WIDTH // 2 - special_text.get_width() // 2, y_offset))
+        y_offset += 60  
+
+        ending_header = font_header.render("End of Game", True, BLACK)
+        screen.blit(ending_header, (WIDTH // 2 - ending_header.get_width() // 2, y_offset))
+        y_offset += 40
+        ending_text = font_medium.render(
+            "Insert explanation here",
+            True, BLACK)
+        screen.blit(ending_text, (WIDTH // 2 - ending_text.get_width() // 2, y_offset))
+        y_offset += 60  
+
+        back_button_rect = pygame.Rect(WIDTH - button_width - 20, HEIGHT - button_height - 20, button_width, button_height)
+        pygame.draw.rect(screen, YELLOW, back_button_rect, border_radius=button_radius)  
+        pygame.draw.rect(screen, BLACK, back_button_rect, 5, border_radius=button_radius)  
+
+        back_button_text = font_small.render("Back", True, BLACK)
+        screen.blit(back_button_text, back_button_text.get_rect(center=back_button_rect.center))
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if back_button_rect.collidepoint(event.pos):
+                    return 
+
+def show_welcome_screen():
+    while True:
+        screen.fill(LIGHT_BLUE)  
+
+        title = font_big.render("WELCOME TO MONOPOLY", True, BLACK)
+        screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 80)))
+
+        title = font_small.render("Game made by Aaron, Tom, Harry, Jack, Samrad", True, BLACK)
+        screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 25)))
+
+        title = font_small.render("Work split was 37% Aaron, 29% Tom, 12% Haryy, 11% Jack, 11% Samrad", True, BLACK)
+        screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 5)))
+
+        continue_button_rect = pygame.Rect(WIDTH // 2 - button_width // 2, HEIGHT // 2 + 20, button_width, button_height)
+        pygame.draw.rect(screen, YELLOW, continue_button_rect, border_radius=button_radius)  
+        pygame.draw.rect(screen, DARK_BLUE, continue_button_rect, 5, border_radius=button_radius)  
+
+        continue_button_text = font_small.render("Click to continue", True, BLACK)
+        screen.blit(continue_button_text, continue_button_text.get_rect(center=continue_button_rect.center))
+
+        rules_button_rect = pygame.Rect(WIDTH // 2 - button_width // 2, HEIGHT // 2 + 100, button_width, button_height)
+        pygame.draw.rect(screen, YELLOW, rules_button_rect, border_radius=button_radius) 
+        pygame.draw.rect(screen, DARK_BLUE, rules_button_rect, 5, border_radius=button_radius)  
+
+        rules_button_text = font_small.render("Explain the Rules", True, BLACK)
+        screen.blit(rules_button_text, rules_button_text.get_rect(center=rules_button_rect.center))
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if continue_button_rect.collidepoint(event.pos):
+                    return  
+                if rules_button_rect.collidepoint(event.pos):
+                    show_help_screen() 
+
+show_welcome_screen()
+
 
 TAX_SQUARE_INCOME = 3
 TAX_SQUARE_LUXURY = 15
@@ -12,6 +150,8 @@ FREE_VOTES_SQUARE_1 = 6
 FREE_VOTES_SQUARE_2 = 23
 GO_SQUARE = 0
 go_passes = 0
+times_passed_go = 0
+Influence_points = 1500
 pygame.display.set_caption("Politician Monopoly")
 
 game_over = 0
@@ -23,7 +163,7 @@ class Space(pygame.sprite.Sprite):
         self.number = num
         self.name = name
         self.rect = location
-        self.postion = position
+        self.position = position
         self.colour = colour
         self.cost = cost
         self.space = 0
@@ -40,13 +180,19 @@ class Space(pygame.sprite.Sprite):
         self.parties = ['Greens', 'Liberals', 'Labor']
 
     def get_position(self):
-        return self.postion
+        return self.position
 
     def set_buy(self, is_bought):
         self.bought = is_bought
 
     def get_buy(self):
         return self.bought
+
+    def get_party(self):
+        return self.party
+
+    def set_party(self, party):
+        self.party = party
 
     def get_cost(self):
         return self.cost
@@ -58,7 +204,10 @@ class Space(pygame.sprite.Sprite):
         for i in range(len(self.parties)):
             if party == self.parties[i]:
                 if self.party == party_colour: 
-                    screen.blit(self.font, (1000, self.text_pos))     
+                    screen.blit(self.font, (1000, self.text_pos))  
+        
+        if self.party == party_colour:
+            self.bought = False
 
         if self.number in [1, 2, 4, 5, 11, 12, 14]:
             screen.blit(self.bold_font, self.party_pos)
@@ -75,7 +224,12 @@ class Space(pygame.sprite.Sprite):
                 property_name = pixel_font.render(self.name, True, 0)
                 cost_text = pixel_font.render("Property Cost: $"+ str(self.cost), True, 0)
                 ROI_text = pixel_font.render("ROI:", True, 0)
-                set_bonus_text = pixel_font.render("Set Bonus:", True, 0)
+                setbonus = 0
+                for color, locs in zip(sets.keys(), sets.values()):
+                    if self.name in locs:
+                         setbonus = set_bonus[color]
+                         break
+                set_bonus_text = pixel_font.render("Set Bonus: " + str(setbonus) , True, 0)
                 pygame.draw.rect(screen, (170 , 170, 170), [20, 120, 250, 220])
                 screen.blit(property_name, (30, 130))
                 screen.blit(cost_text, (30, 150))
@@ -83,13 +237,14 @@ class Space(pygame.sprite.Sprite):
                 screen.blit(set_bonus_text, (30, 190))
 
 class AnimatedDice(pygame.sprite.Sprite):
-    def __init__(self, frames, pos, groups, dice_timer, roll_index):
+    def __init__(self, frames, pos, groups, dice_timer, roll_amnt =- 1):
         super().__init__(groups)
         self.frames = frames
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_frect(center=pos)
         self.dice_timer = dice_timer
+        self.roll_amnt = roll_amnt
 
     def update(self, dt):
         self.frame_index += 9 * dt 
@@ -101,8 +256,10 @@ class AnimatedDice(pygame.sprite.Sprite):
         
         else:
             self.kill()
-            roll = random.randint(0, 5)
-            self.dice_timer(roll) 
+            if self.roll_amnt == -1:
+                self.roll_amnt = random.randint(0, 5)
+
+            self.dice_timer(self.roll_amnt) 
             
 class Player(pygame.sprite.Sprite):
     def __init__(self, groups, hat):
@@ -178,7 +335,7 @@ class Player(pygame.sprite.Sprite):
         self.traveling = True
         
 def dice_timer(roll):
-    global dice_rolling, dice, last_roll, rolls, redo, roll_button_idx, go_passes, game_over
+    global dice_rolling, dice, last_roll, rolls, redo, roll_button_idx, go_passes, game_over, Influence_points, Votes
     dice_rolling = True
     dice = True
     last_roll = roll
@@ -188,19 +345,25 @@ def dice_timer(roll):
         redo = True
         rolls -= 24
         go_passes += 1
-        print(f"Passed GO {go_passes} time(s)")
-
-        if go_passes >= 5:
-            game_over = True
-            print("Game Over!")
-            display_game_over() 
+        Influence_points += 100
+    if rolls == 12:
+        go_passes += 1
+    if rolls == 18:
+        if go_passes == 0:
+            Influence_points += 100
+        else:
+            go_passes -= 1
+    if rolls == 6:
+        Votes += 20     
+    if go_passes >= 5:
+        game_over = True
+        display_game_over() 
 
     print(rolls, (list(all_spaces.sprites())[rolls % len(all_spaces)]).get_position())
     all_spaces_list = all_spaces.sprites()
     player.move_to_square((all_spaces_list[rolls % len(all_spaces_list)]).get_position())
 
     roll_button_idx = 0
-
 
 def display_game_over():
     global game_over
@@ -220,17 +383,20 @@ def display_game_over():
         screen.blit(text2, text_rect2)
         
         pygame.display.flip() 
-        pygame.time.wait(5000)  
-        pygame.quit()  
-        exit()  
+        running = True
+        while running:
+            clock.tick(60)
 
-    if game_over:
-        display_game_over()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+        pygame.font.quit()            
         pygame.quit()
         exit()
 
 def variable_setup():
-    global player, spots
+    global player, spots, sets, set_bonus, names
     spots = []
     spots_rects = []
     property_values = [50, 50, 0, 150, 200, 300, 0, 0, 400, 450, 550, 600, 0, 650, 0, 700, 700, 0, 750, 0]
@@ -239,14 +405,14 @@ def variable_setup():
     names = ["Brooky", "Manly Vale", "Income Tax", "Belrose", "Terrey Hills", "Dee Why", "Com Chest", "Chance", "Cromer", "Forest", "Alambie", "Beacon Hill", "Luxury Tax", "Sea Forth", "Com Chest", "Curly", "Freshy", "Chance", "Manly", "Free Perk"]
     party_values = ['springgreen4', 'springgreen4', 'white', 'springgreen4', 'firebrick1', 'firebrick1', 'white', 'white', 'springgreen4', 'deepskyblue3', 'springgreen4', 'firebrick1', 'white', 'springgreen4', 'white', 'deepskyblue3', 'deepskyblue3', 'white', 'firebrick1', 'white']
     party_positions = [(425, -70), (514, -70), (0, 0), (693, -70), (782, -70), (908, 145), (0, 0), (0, 0), (908, 412), (908, 502), (780, 498), (691, 498), (0, 0), (513, 498), (0, 0), (206, 498), (206, 410), (0, 0), (206, 232),(0, 0)]
-    set = { 
+    sets = { 
             "brown": ["Brooky", "Manly Vale"],
             "blue": ["Belrose", "Terrey Hills"],
             "yellow": ["Dee Why"],
             "pink": ["Cromer", "Forest"],
             "red": ["Alambie", "Beacon Hill"],
             "gold": ["Sea Forth"],
-            "purple": ["Curl Curl", "Freshy"],
+            "purple": ["Curly", "Freshy"],
             "turquoise": ["Manly"]
             }
     set_bonus = {
@@ -258,7 +424,7 @@ def variable_setup():
                 "gold": 65,
                 "purple": 70,
                 "turquoise": 75
-    }
+                }
     
     go_surf = pygame.image.load(join("images", "spaces", "go.png")).convert_alpha()
     go_rect = go_surf.get_rect(topleft=(288, 10))
@@ -335,7 +501,11 @@ property_price = 0
 Influence_points = 1500
 Votes = 0
 current_time = pygame.time.get_ticks()
-
+Dice = [1,2,3,4,5,6]
+choice = ""
+chance_chest = ["Gain influence points","Gain votes","Add extra time to pass Go","Move backward","Lose influence points","Lose votes","Remove extra time to pass Go","Move forward"]
+center_x = WIDTH / 2
+Chance_height = 475
 
 liberal_surf = pygame.image.load(join('images', 'liberal.png')).convert_alpha()
 liberal_rect = liberal_surf.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
@@ -404,8 +574,6 @@ while class_select:
 
     pygame.display.update()
 
-
-
 button_images = [pygame.image.load(f"images/button/roll_button{i}.png") for i in range(2)]
 roll_button_idx = 0
 buy_button_idx = 0
@@ -442,11 +610,12 @@ vote_squares = {
 }
 
 roll_frames = [pygame.image.load(join('images', 'dice', 'roll',  f'{i}.png')).convert_alpha() for i in range(0, 8)]
-
+choice_text = pixel_font.render(choice, True, 'black')
 while running:
     dt = clock.tick(60) / 1000
     influence_text = pixel_font.render("Influence Points: " + str(Influence_points), True, 'black')
     votes_text = pixel_font.render("Votes: " + str(Votes), True, 'black')
+    passed_go_text = pixel_font.render("Times Passed GO: " + str(go_passes), True, 'black')
 
     # Event loops
     for event in pygame.event.get():
@@ -454,11 +623,34 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        keys = pygame.key.get_pressed()
+        nums = [
+            keys[pygame.K_1],
+            keys[pygame.K_2],
+            keys[pygame.K_3],
+            keys[pygame.K_4],
+            keys[pygame.K_5],
+            keys[pygame.K_6]
+        ]
+
+        if any(nums) and dice_rolling and not player.traveling:
+            dice = False
+            roll = 0
+            for i, n in enumerate(nums):
+                if n:
+                    roll = i
+                    break
+
+            AnimatedDice(
+                roll_frames, middle, all_sprites, dice_timer, roll_amnt=roll
+            )
+            dice_rolling = False
+
         if event.type == pygame.MOUSEBUTTONDOWN and dice_rolling and not player.traveling:
             if roll_button.collidepoint(event.pos):
                 if dice_rolling and not player.traveling:
                     dice = False
-                    AnimatedDice(roll_frames, middle, all_sprites, dice_timer, last_roll)
+                    AnimatedDice(roll_frames, middle, all_sprites, dice_timer)
                     dice_rolling = False
                     roll_button_idx = 1
             if buy_button.collidepoint(event.pos):
@@ -475,20 +667,56 @@ while running:
 
             if rolls in vote_squares:
                 Votes = vote_squares[rolls](Votes)
+            if rolls == 8 or rolls == 9 or rolls == 17 or rolls == 21:
+                print("Card")
+                choice = random.choice(chance_chest)
+                print(choice)
+                if choice == "Gain influence points":
+                    Influence_points = Influence_points + 100
+                    print(str(Influence_points))
+                if choice == "Gain votes":
+                    Votes = Votes + 10
+                if choice == "Add to times Passed Go":
+                    go_passes += 1
+                if choice == "Move backward":
+                    rolls -= random.choice(Dice)
+                    if rolls < 0:
+                        rolls += 24
+                if choice == "Lose influence points":
+                    Influence_points = Influence_points - 100
+                    print(str(Influence_points))
+                if choice == "Lose votes":
+                    Votes = Votes - 10
+                if choice == "Remove from times Passed Go":
+                    go_passes -= 1
+                if choice == "Move forward":
+                    rolls += random.choice(Dice)
+                    if rolls > 23:
+                        rolls -= 24
+                player.move_to_square((all_spaces.sprites()[rolls]).get_position()) 
+                choice_text = pixel_font.render(choice, True, 'black')
+            else:
+                choice = ""
+                choice_text = pixel_font.render(choice, True, 'black')
+
 
 
     if pygame.time.get_ticks() > current_time + 200:
         buy_button_idx = 0 
 
-    if all_spaces.sprites()[rolls].get_cost() != 0:
+    if not (all_spaces.sprites()[rolls]).get_buy():
+        buy_text = pixel_font.render("PROPERTY SOLD", True, "black")
+        buy_pos = (117, 515)
+
+    elif all_spaces.sprites()[rolls].get_cost() != 0:
         property_price = all_spaces.sprites()[rolls].get_cost()
         buy_text = pixel_font.render("Buy Property: $" + str(property_price), True, "black")
         buy_pos = (105, 515)
+    
     else:
         property_price = 0
         buy_text = pixel_font.render("Can't Buy", True, 'black')
         buy_pos = (140, 515)
-
     # Update sprites
     all_sprites.update(dt)
 
@@ -499,6 +727,7 @@ while running:
     screen.blit(button_images[buy_button_idx], buy_button)
     screen.blit(buy_text, buy_pos)
     screen.blit(properites_text, (1000, 15))
+    screen.blit(passed_go_text, (20, 60))
 
     if dice:
         screen.blit(dices[last_roll], dice_rect)
@@ -508,8 +737,13 @@ while running:
     all_spaces.draw(screen) 
     all_sprites.draw(screen)
     all_spaces.update(dt)
-
+    screen.blit(choice_text, (20, 80))
     pygame.display.update()
+
+    if Influence_points <= 0:
+        game_over = True
+        display_game_over()
+        
 pygame.font.quit()
 pygame.quit()
 exit()
